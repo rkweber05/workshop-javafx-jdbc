@@ -16,50 +16,50 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
-public class MainViewController implements Initializable{
+public class MainViewController implements Initializable {
 
 	@FXML
 	private MenuItem menuItemSeller;
-	
+
 	@FXML
 	private MenuItem menuItemDepartment;
-	
+
 	@FXML
 	private MenuItem menuItemAbout;
-	
+
 	@FXML
-	public void onMenuItemSellerAction() { 
+	public void onMenuItemSellerAction() {
 		System.out.println("onMenuItemSellerAction");
 	}
-	
+
 	@FXML
-	public void onMenuItemDepartmentAction() { 
+	public void onMenuItemDepartmentAction() {
 		loadView("/gui/DepartmentList.fxml");
 	}
-	
+
 	@FXML
-	public void onMenuItemAboutAction() { 
+	public void onMenuItemAboutAction() {
 		loadView("/gui/About.fxml");
 	}
-	
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {}
 
-	
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+	}
+
 	private synchronized void loadView(String absoluteName) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVBox = loader.load();
-			
+
 			Scene mainScene = Main.getMainScene();
-			VBox mainBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent(); // pega o primeiro elemento da view, acessa o conteudo do ScroolPane,
-			
+			VBox mainBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent(); // pega o primeiro elemento da view,
+																					// acessa o conteudo do ScroolPane,
+
 			Node mainMenu = mainBox.getChildren().get(0); // primeiro filho da janela principal
 			mainBox.getChildren().clear();
 			mainBox.getChildren().add(mainMenu);
 			mainBox.getChildren().addAll(newVBox.getChildren());
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
