@@ -51,7 +51,7 @@ public class MainViewController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 	}
 
-	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
+	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) { // para não precisar criar varias funções, se cria uma unica função parametrizada
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVBox = loader.load();
