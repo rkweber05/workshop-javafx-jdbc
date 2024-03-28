@@ -22,10 +22,10 @@ public class MainViewController implements Initializable {
 
 	@FXML
 	private MenuItem menuItemSeller;
-
+	
 	@FXML
 	private MenuItem menuItemDepartment;
-
+	
 	@FXML
 	private MenuItem menuItemAbout;
 
@@ -37,38 +37,38 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuItemDepartmentAction() {
 		loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
-			controller.setDepartmentService(new DepartmentService()); // injeta a dependencia no controller
+			controller.setDepartmentService(new DepartmentService());
 			controller.updateTableView();
 		});
 	}
-
+	
 	@FXML
 	public void onMenuItemAboutAction() {
 		loadView("/gui/About.fxml", x -> {});
 	}
-
+	
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+	public void initialize(URL uri, ResourceBundle rb) {
 	}
-
-	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) { // para não precisar criar varias funções, se cria uma unica função parametrizada
+	
+	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVBox = loader.load();
-
+			
 			Scene mainScene = Main.getMainScene();
-			VBox mainBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent(); // pega o primeiro elemento da view,
-																					// acessa o conteudo do ScroolPane,
-
-			Node mainMenu = mainBox.getChildren().get(0); // primeiro filho da janela principal
-			mainBox.getChildren().clear();
-			mainBox.getChildren().add(mainMenu);
-			mainBox.getChildren().addAll(newVBox.getChildren());
+			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+			
+			Node mainMenu = mainVBox.getChildren().get(0);
+			mainVBox.getChildren().clear();
+			mainVBox.getChildren().add(mainMenu);
+			mainVBox.getChildren().addAll(newVBox.getChildren());
 			
 			T controller = loader.getController();
 			initializingAction.accept(controller);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
-	}
+	}	
 }
